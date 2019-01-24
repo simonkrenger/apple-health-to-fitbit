@@ -14,7 +14,7 @@ The script will convert the following data:
 * Steps
 * Floors climbed
 
-## Usage
+## Usage
 
 Create an Apple Health export on your iPhone and extract the archive. Clone the repository and place both the `export.xml` and the `export_cda.xml` file in the same folder as the Python script:
 
