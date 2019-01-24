@@ -27,9 +27,9 @@ for entry in export_cda_root.findall('{urn:hl7-org:v3}entry'):
 
 			if(code == "3141-9"):
 				# Use the following two lines to also calculate BMI as well (1.80 = height in m)
-        		#bmi = round(float(value) / (1.80 * 1.80),2)
+				#bmi = round(float(value) / (1.80 * 1.80),2)
 				#print("\"%s\",\"%s\",\"%s\",\"0\"" % (date_string, value, bmi))
-        		print("\"%s\",\"%s\",\"0\",\"0\"" % (date_string, value))
+				print("\"%s\",\"%s\",\"0\",\"0\"" % (date_string, value))
 
 print("")
 print("Activities")
