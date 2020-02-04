@@ -59,9 +59,9 @@ for record in export_root.findall('Record'):
 
 	if(record.get('type') == "HKQuantityTypeIdentifierFlightsClimbed"):
 		if date_string in floors_dict:
-			floors_dict[date_string] = int(floors_dict[date_string]) + int(value)
+			floors_dict[date_string] = int(floors_dict[date_string]) + float(value)
 		else:
-			floors_dict[date_string] = int(float(value))
+			floors_dict[date_string] = float(float(value))
 
 # Iterate over all dates we found
 for date_key in steps_dict:
