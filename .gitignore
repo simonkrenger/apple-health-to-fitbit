@@ -1,3 +1,11 @@
+# Apple Health files
+export.xml
+export_cda.xml
+export.zip
+
+# Mac files
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
