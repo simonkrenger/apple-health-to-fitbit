@@ -1,6 +1,7 @@
-# Convert Apple Health export to Fitbit CSV
+# Convert Apple Health export to (Fitbit) CSV
 
 A Python script to convert an Apple Health XML export to a Fitbit CSV file.
+There is also a script to generate a generic CSV file from your Apple Health data.
 
 ## Why
 
@@ -86,6 +87,7 @@ $ ls -l
 -rw-r--r--  1 simon  staff       1186 Apr 10 21:22 HKQuantityTypeIdentifierHeight.csv
 -rw-r--r--  1 simon  staff      26669 Apr 10 21:22 HKQuantityTypeIdentifierRestingHeartRate.csv
 -rw-r--r--  1 simon  staff   39502300 Apr 10 21:22 HKQuantityTypeIdentifierStepCount.csv
+-rw-r--r--@ 1 simon  staff      24818 Apr 10 22:02 Workouts.csv
 -rwxr-xr-x  1 simon  staff       1112 Apr 10 21:21 convert_export-xml_to_csv.py
 -rw-r--r--@ 1 simon  staff  118092195 Apr  3 10:33 export.xml
 ```
