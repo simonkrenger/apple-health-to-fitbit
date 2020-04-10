@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-from datetime import datetime
-
 import xml.etree.ElementTree as ET
 
 print("Start parse.")
@@ -26,9 +24,9 @@ for record_type in record_types:
   attributes = []
   for record in export_root.findall('Record'):
     if(record.get('type') == record_type):
-      for name in record.attrib:
-        if name not in attributes:
-          attributes.append(name)
+      for attribute_name in record.attrib:
+        if attribute_name not in attributes:
+          attributes.append(attribute_name)
 
   # Write a file for each Record type
   filename = record_type + ".csv"
@@ -58,9 +56,9 @@ print("Finding Workouts...")
 # Find all attributes for workouts
 wo_attributes = []
 for workout in export_root.findall('Workout'):
-  for name in workout.attrib:
-    if name not in wo_attributes:
-      wo_attributes.append(name)
+  for attribute_name in workout.attrib:
+    if attribute_name not in wo_attributes:
+      wo_attributes.append(attribute_name)
 
 # Print all workouts
 filename = "Workouts.csv"
