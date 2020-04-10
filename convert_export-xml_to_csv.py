@@ -31,7 +31,7 @@ for record_type in record_types:
   # Write a file for each Record type
   filename = record_type + ".csv"
   print("Writing " + filename + "...\n")
-  with open(filename, 'a') as output_file:
+  with open(filename, 'w') as output_file:
     # Header
     output_file.write(record_type + "\n")
     output_file.write(','.join(attributes) + "\n")
