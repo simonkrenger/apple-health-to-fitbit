@@ -71,6 +71,8 @@ Place and run the `convert_export-xml_to_csv.py` script in the same folder as yo
 After running the script, the CSV files are available in the same folder (one per Record type):
 
 ```
+$ ./convert_export-xml_to_csv.py
+[..]
 $ ls -l
 -rw-r--r--@ 1 simon  staff     957665 Apr 10 21:22 HKCategoryTypeIdentifierSleepAnalysis.csv
 -rw-r--r--  1 simon  staff     286151 Apr 10 21:22 HKQuantityTypeIdentifierActiveEnergyBurned.csv
@@ -84,6 +86,6 @@ $ ls -l
 -rw-r--r--  1 simon  staff       1186 Apr 10 21:22 HKQuantityTypeIdentifierHeight.csv
 -rw-r--r--  1 simon  staff      26669 Apr 10 21:22 HKQuantityTypeIdentifierRestingHeartRate.csv
 -rw-r--r--  1 simon  staff   39502300 Apr 10 21:22 HKQuantityTypeIdentifierStepCount.csv
--rwxr-xr-x  1 simon  staff       1112 Apr 10 21:21 conver_to_csv.py
+-rwxr-xr-x  1 simon  staff       1112 Apr 10 21:21 convert_export-xml_to_csv.py
 -rw-r--r--@ 1 simon  staff  118092195 Apr  3 10:33 export.xml
 ```
