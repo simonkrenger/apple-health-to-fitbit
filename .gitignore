@@ -3,6 +3,9 @@ export.xml
 export_cda.xml
 export.zip
 
+# CSVs
+*.csv
+
 # Mac files
 .DS_Store
 
