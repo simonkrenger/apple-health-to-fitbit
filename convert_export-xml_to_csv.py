@@ -9,6 +9,8 @@ print("Start parse.")
 export = ET.parse('export.xml')
 export_root = export.getroot()
 
+## Records
+
 # Find all Record types
 print("Finding Record types...")
 record_types = []
@@ -49,5 +51,33 @@ for record_type in record_types:
 
           output_file.write(value + ",")
         output_file.write("\n")
+
+## Workouts
+
+print("Finding Workouts...")
+# Find all attributes for workouts
+wo_attributes = []
+for workout in export_root.findall('Workout'):
+  for name in workout.attrib:
+    if name not in wo_attributes:
+      wo_attributes.append(name)
+
+# Print all workouts
+filename = "Workouts.csv"
+print("Writing " + filename + "...")
+with open(filename, 'w') as output_file:
+  # Header
+  output_file.write("Workouts\n")
+  output_file.write(','.join(wo_attributes) + "\n")
+
+  # Records
+  for workout in export_root.findall('Workout'):
+    for att in wo_attributes:
+      value = workout.get(att)
+      if value is None:
+        value = "NULL" # Catch null values
+
+      output_file.write(value + ",")
+    output_file.write("\n")
 
 print("Done.")
