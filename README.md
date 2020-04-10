@@ -16,7 +16,9 @@ The script will convert the following data:
 
 Everything else is ignored (for example sleep data). Feel free to modify the script to include this data as well.
 
-## Usage
+There is also a script to convert the Apple Health data into generic CSV.
+
+## Usage (health_to_fitbit.py)
 
 Create an Apple Health export on your iPhone and extract the archive. Clone the repository and place both the `export.xml` and the `export_cda.xml` file in the same folder as the Python script:
 
@@ -62,3 +64,26 @@ If you get an error during import, check the following:
 
 * Garmin Connect only allows uploading values for one year. If you have multiple years of data, manually edit the file to make sure the CSV only contains one year at a time (e.g. only 2017).
 * Check that you have selected the correct format for dates and numbers that correspond with the format in the generated CSV.
+
+## Usage (convert_export-xml_to_csv.py)
+
+Place and run the `convert_export-xml_to_csv.py` script in the same folder as your `export.xml` file.
+After running the script, the CSV files are available in the same folder (one per Record type):
+
+```
+$ ls -l
+-rw-r--r--@ 1 simon  staff     957665 Apr 10 21:22 HKCategoryTypeIdentifierSleepAnalysis.csv
+-rw-r--r--  1 simon  staff     286151 Apr 10 21:22 HKQuantityTypeIdentifierActiveEnergyBurned.csv
+-rw-r--r--  1 simon  staff     132679 Apr 10 21:22 HKQuantityTypeIdentifierBasalEnergyBurned.csv
+-rw-r--r--  1 simon  staff     113107 Apr 10 21:22 HKQuantityTypeIdentifierBodyMass.csv
+-rw-r--r--  1 simon  staff      15226 Apr 10 21:22 HKQuantityTypeIdentifierBodyTemperature.csv
+-rw-r--r--  1 simon  staff   26027805 Apr 10 21:22 HKQuantityTypeIdentifierDistanceWalkingRunning.csv
+-rw-r--r--@ 1 simon  staff    9411035 Apr 10 21:22 HKQuantityTypeIdentifierFlightsClimbed.csv
+-rw-r--r--  1 simon  staff      40685 Apr 10 21:22 HKQuantityTypeIdentifierHeadphoneAudioExposure.csv
+-rw-r--r--  1 simon  staff  120749803 Apr 10 21:22 HKQuantityTypeIdentifierHeartRate.csv
+-rw-r--r--  1 simon  staff       1186 Apr 10 21:22 HKQuantityTypeIdentifierHeight.csv
+-rw-r--r--  1 simon  staff      26669 Apr 10 21:22 HKQuantityTypeIdentifierRestingHeartRate.csv
+-rw-r--r--  1 simon  staff   39502300 Apr 10 21:22 HKQuantityTypeIdentifierStepCount.csv
+-rwxr-xr-x  1 simon  staff       1112 Apr 10 21:21 conver_to_csv.py
+-rw-r--r--@ 1 simon  staff  118092195 Apr  3 10:33 export.xml
+```
