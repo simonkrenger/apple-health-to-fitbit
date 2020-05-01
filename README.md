@@ -15,7 +15,7 @@ One solution is to convert the existing Apple Health data to a Fitbit CSV format
 
 Another solution is to export the data into a generic CSV format and then use these with other programs (such as [GoldenCheetah](https://github.com/GoldenCheetah/GoldenCheetah)).
 
-## Exporting your Apple Health data
+## Exporting your Apple Health data
 
 To export your Health data from your iPhone, follow these steps:
 
