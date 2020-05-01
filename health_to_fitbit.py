@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
-from datetime import datetime
+# Script to convert Apple Health data to Fitbit CSV data
 
+import os.path
 import xml.etree.ElementTree as ET
+
+from datetime import datetime
 
 if not os.path.exists('export_cda.xml'):
   print("Error: export_cda.xml not found.")
