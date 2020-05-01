@@ -15,6 +15,16 @@ if not os.path.exists('export.xml'):
   print("Error: export.xml not found.")
   exit(1)
 
+height_cm_input = input("What is your height in cm? ")
+try:
+	height_cm = int(height_cm_input)
+	height_m = float(height_cm) / 100.0
+except:
+	print("Unable to parse input.")
+	exit(1)
+
+print("OK. Parsing files...")
+
 try:
   export_cda = ET.parse('export_cda.xml')
 except ET.ParseError as error:
@@ -23,13 +33,20 @@ except ET.ParseError as error:
 	print("Exiting")
 	exit(1)
 
-export_cda_root = export_cda.getroot()
+try:
+	export = ET.parse('export.xml')
+except ET.ParseError as error:
+	print("Failed to parse 'export.xml'.")
+	print("Exiting")
+	exit(1)
 
-export = ET.parse('export.xml')
+
+export_cda_root = export_cda.getroot()
 export_root = export.getroot()
 
-print("Body")
-print("Date,Weight,BMI,Fat")
+# Go through export_cda.xml to get all weight values
+
+weight_dict = {}
 
 for entry in export_cda_root.findall('{urn:hl7-org:v3}entry'):
 	for organizer in entry.findall('{urn:hl7-org:v3}organizer'):
@@ -37,21 +54,15 @@ for entry in export_cda_root.findall('{urn:hl7-org:v3}entry'):
 			observation = component.find('{urn:hl7-org:v3}observation')
 			
 			code = observation.find('{urn:hl7-org:v3}code').get('code')
-			value = observation.find('{urn:hl7-org:v3}value').get('value')
-
-			effective_time = observation.find('{urn:hl7-org:v3}effectiveTime').find('{urn:hl7-org:v3}low')
-			time_value = datetime.strptime(effective_time.get('value'), '%Y%m%d%H%M%S%z')
-			date_string = time_value.strftime('%d-%m-%Y')
-
 			if(code == "3141-9"):
-				# Use the following two lines to also calculate BMI as well (1.80 = height in m)
-				#bmi = round(float(value) / (1.80 * 1.80),2)
-				#print("\"%s\",\"%s\",\"%s\",\"0\"" % (date_string, value, bmi))
-				print("\"%s\",\"%s\",\"0\",\"0\"" % (date_string, value))
+				value = observation.find('{urn:hl7-org:v3}value').get('value')
+				effective_time = observation.find('{urn:hl7-org:v3}effectiveTime').find('{urn:hl7-org:v3}low')
+				time_value = datetime.strptime(effective_time.get('value'), '%Y%m%d%H%M%S%z')
+				date_string = time_value.strftime('%d-%m-%Y')
 
-print("")
-print("Activities")
-print("Date,Calories Burned,Steps,Distance,Floors,Minutes Sedentary,Minutes Lightly Active,Minutes Fairly Active,Minutes Very Active,Activity Calories")
+				weight_dict[date_string] = value
+
+# Go through export.xml to get all activities, steps, distance, floors climbed
 
 steps_dict = {}
 distance_dict = {}
@@ -81,29 +92,77 @@ for record in export_root.findall('Record'):
 		else:
 			floors_dict[date_string] = float(float(value))
 
-# Iterate over all dates we found
+# Find out which years we need to print
+# All dict keys are formated with "time_value.strftime('%d-%m-%Y')"
+years = []
+
+for date_key in weight_dict:
+	tmp_year = datetime.strptime(date_key, '%d-%m-%Y').strftime('%Y')
+	if tmp_year not in years:
+		print("Found weight data for " + tmp_year)
+		years.append(tmp_year)
+
 for date_key in steps_dict:
-	output = "\""
-	output += date_key
-	output += "\",\"0\",\""
+	tmp_year = datetime.strptime(date_key, '%d-%m-%Y').strftime('%Y')
+	if tmp_year not in years:
+		print("Found step data for " + tmp_year)
+		years.append(tmp_year)
 
-	if date_key in steps_dict:
-		output += str("{:,}".format(steps_dict[date_key]))
-    
-	output += "\",\""
+print("Now generating FitBit CSV files for the following years: " + ', '.join(years))
 
-	if date_key in distance_dict:
-		output += str(round(distance_dict[date_key],2))
-	else:
-		output += "0"
+for file_year in years:
+	filename = "fitbit_" + file_year + ".csv"
+	print("Writing " + filename + "...")
+	with open(filename, 'w') as output_file:
 
-	output += "\",\""
+	  # Print weight
 
-	if date_key in floors_dict:
-		output += str(floors_dict[date_key])
-	else:
-		output += "0"
+		# Header
+		output_file.write("Body\n")
+		output_file.write("Date,Weight,BMI,Fat\n")
 
-	output += "\",\"0\",\"0\",\"0\",\"0\",\"0\""
+		# Data
+		for date_key in weight_dict:
+			dict_year = datetime.strptime(date_key, '%d-%m-%Y').strftime('%Y')
+			if(dict_year == file_year):
+				value = weight_dict[date_key]
+				bmi = round(float(value) / (height_m * height_m),2)
+				output_file.write("\"%s\",\"%s\",\"%s\",\"0\"\n" % (date_key, value, bmi))
 
-	print(output)
+		# Print activities
+
+		# Header
+		output_file.write("\n")
+		output_file.write("Activities\n")
+		output_file.write("Date,Calories Burned,Steps,Distance,Floors,Minutes Sedentary,Minutes Lightly Active,Minutes Fairly Active,Minutes Very Active,Activity Calories\n")
+
+		# Data
+		for date_key in steps_dict:
+			dict_year = datetime.strptime(date_key, '%d-%m-%Y').strftime('%Y')
+			if(dict_year == file_year):
+				output = "\""
+				output += date_key
+				output += "\",\"0\",\""
+
+				if date_key in steps_dict:
+					output += str("{:,}".format(steps_dict[date_key]))
+			    
+				output += "\",\""
+
+				if date_key in distance_dict:
+					output += str(round(distance_dict[date_key],2))
+				else:
+					output += "0"
+
+				output += "\",\""
+
+				if date_key in floors_dict:
+					output += str(floors_dict[date_key])
+				else:
+					output += "0"
+
+				output += "\",\"0\",\"0\",\"0\",\"0\",\"0\"\n"
+
+				output_file.write(output)
+
+print("Done.")
