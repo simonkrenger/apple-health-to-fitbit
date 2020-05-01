@@ -4,7 +4,22 @@ from datetime import datetime
 
 import xml.etree.ElementTree as ET
 
-export_cda = ET.parse('export_cda.xml')
+if not os.path.exists('export_cda.xml'):
+  print("Error: export_cda.xml not found.")
+  exit(1)
+
+if not os.path.exists('export.xml'):
+  print("Error: export.xml not found.")
+  exit(1)
+
+try:
+  export_cda = ET.parse('export_cda.xml')
+except ET.ParseError as error:
+	print("Unable to parse 'export_cda.xml', it might be invalid XML.")
+	print("Try to fix 'export_cda.xml' by running the included 'fix_invalid_export_cda_xml' script.")
+	print("Exiting")
+	exit(1)
+
 export_cda_root = export_cda.getroot()
 
 export = ET.parse('export.xml')
