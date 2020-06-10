@@ -88,9 +88,9 @@ for record in export_root.findall('Record'):
 
 	if(record.get('type') == "HKQuantityTypeIdentifierFlightsClimbed"):
 		if date_string in floors_dict:
-			floors_dict[date_string] = int(floors_dict[date_string]) + float(value)
+			floors_dict[date_string] = int(floors_dict[date_string]) + int(value)
 		else:
-			floors_dict[date_string] = float(float(value))
+			floors_dict[date_string] = int(float(value))
 
 # Find out which years we need to print
 # All dict keys are formated with "time_value.strftime('%d-%m-%Y')"
