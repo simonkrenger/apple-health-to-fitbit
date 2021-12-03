@@ -68,6 +68,13 @@ steps_dict = {}
 distance_dict = {}
 floors_dict = {} 
 
+# Helper function to parse int
+def parse_to_int(s):
+    try:
+        return int(s)
+    except ValueError:
+        return int(float(s))
+
 for record in export_root.findall('Record'):
 	start_date = datetime.strptime(record.get('startDate'), '%Y-%m-%d %H:%M:%S %z')
 	date_string = start_date.strftime('%d-%m-%Y')
@@ -76,9 +83,9 @@ for record in export_root.findall('Record'):
 	# Aggregate the data by calculating the sum for each date
 	if(record.get('type') == "HKQuantityTypeIdentifierStepCount"):
 		if date_string in steps_dict:
-			steps_dict[date_string] = int(steps_dict[date_string]) + int(value)
+			steps_dict[date_string] = steps_dict[date_string] + parse_to_int(value)
 		else:
-			steps_dict[date_string] = int(value)
+			steps_dict[date_string] = parse_to_int(value)
 
 	if(record.get('type') == "HKQuantityTypeIdentifierDistanceWalkingRunning"):
 		if date_string in distance_dict:
@@ -88,9 +95,9 @@ for record in export_root.findall('Record'):
 
 	if(record.get('type') == "HKQuantityTypeIdentifierFlightsClimbed"):
 		if date_string in floors_dict:
-			floors_dict[date_string] = int(floors_dict[date_string]) + int(value)
+			floors_dict[date_string] = floors_dict[date_string] + parse_to_int(value)
 		else:
-			floors_dict[date_string] = int(float(value))
+			floors_dict[date_string] = parse_to_int(value)
 
 # Find out which years we need to print
 # All dict keys are formated with "time_value.strftime('%d-%m-%Y')"
