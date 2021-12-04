@@ -22,7 +22,7 @@ To export your Health data from your iPhone, follow these steps:
 * Open the Apple Health App on your iPhone
 * Click your icon in the top right of the screen
 * At the bottom, select "Export All Health Data", confirm with "Export"
-* Export the ZIP file via Dropbox / E-Mail / whatever
+* Export the ZIP file via Dropbox / email / whatever
 
 ## health_to_fitbit.py
 
