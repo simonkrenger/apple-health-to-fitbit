@@ -57,4 +57,5 @@ jobs:
           VALIDATE_GITLEAKS: true
           VALIDATE_NATURAL_LANGUAGE: true
           VALIDATE_PYTHON: true
+          VALIDATE_PYTHON_PYLINT: true
           VALIDATE_YAML: true
