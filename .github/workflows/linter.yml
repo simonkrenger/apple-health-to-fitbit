@@ -54,3 +54,7 @@ jobs:
           # Change to 'master' if your main branch differs
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_GITLEAKS: true
+          VALIDATE_NATURAL_LANGUAGE: true
+          VALIDATE_PYTHON: true
+          VALIDATE_YAML: true
