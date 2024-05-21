@@ -68,31 +68,35 @@ if confirm.lower() != "yes":
 print("Processing 'export_cda.xml'...")
 
 processing_clinical_document = True
-clinical_document = ""
-new_document = "<?xml version=\"1.0\"?>\n"
-new_document += '<?xml-stylesheet type="text/xsl" href="CDA.xsl"?>\n'
-new_document += '<DummyRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:hl7-org:v3 ../../../CDA%20R2/cda-schemas-and-samples/infrastructure/cda/CDA.xsd" xmlns="urn:hl7-org:v3" xmlns:cda="urn:hl7-org:v3" xmlns:sdtc="urn:l7-org:sdtc" xmlns:fhir="http://hl7.org/fhir/v3">\n'
+clinical_document_lines = []
+new_document_lines = [
+    '<?xml version="1.0"?>\n',
+    '<?xml-stylesheet type="text/xsl" href="CDA.xsl"?>\n',
+    '<DummyRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+    'xsi:schemaLocation="urn:hl7-org:v3 ../../../CDA%20R2/cda-schemas-and-samples/infrastructure/cda/CDA.xsd" '
+    'xmlns="urn:hl7-org:v3" xmlns:cda="urn:hl7-org:v3" xmlns:sdtc="urn:l7-org:sdtc" xmlns:fhir="http://hl7.org/fhir/v3">\n'
+]
+
 with open(EXPORT_CDA_FILE, "r") as export_cda_filehandler:
   for line in export_cda_filehandler:
-      if processing_clinical_document:
-        if line == "</ClinicalDocument>\n":
-          print("Found end of ClinicalDocument.")
-          clinical_document += line
-          processing_clinical_document = False
-        else:
-          clinical_document += line
-      else:
-        new_document += line
-new_document += '</DummyRoot>'
+    if processing_clinical_document:
+      clinical_document_lines.append(line)
+      if line == "</ClinicalDocument>\n":
+        print("Found end of ClinicalDocument.")
+        processing_clinical_document = False
+    else:
+      new_document_lines.append(line)
+
+new_document_lines.append('</DummyRoot>')
 
 print("Done processing.")
 print("Parsing the ClinicalDocument...")
+clinical_document = ''.join(clinical_document_lines)
 clinical_document_root = ET.fromstring(clinical_document)
-clinical_document = None
 
 print("Parsing the rest of the document...")
+new_document = ''.join(new_document_lines)
 new_document_root = ET.fromstring(new_document)
-new_document = None
 
 print("Done. Now merging the two parts into the ClinicalDocument...")
 for component in new_document_root.findall('{urn:hl7-org:v3}component'):
